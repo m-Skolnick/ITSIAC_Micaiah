@@ -64,7 +64,14 @@ void Footer(ofstream &Outfile)
 	return;
 }
 //************************************* END OF FUNCTION FOOTER  ***************************************
+void printDataLabel(ofstream&dataOUT, string label) {
+	dataOUT << "-----------------------------------------------------------------------" << endl;
+
+	dataOUT << endl << label << endl;
+	dataOUT << "-----------------------------------------------------------------------" << endl;
+}
 //*****************************************************************************************************
+
 int GetOpCode(int MIR)
 {
 		// Receives - an integer (MIR)
@@ -419,20 +426,52 @@ int BinToDec(string binary, int key)
 	return number;  //return the converted number
 }
 //*****************************************************************************************************
+void getData(ifstream&dataIN, ofstream&dataOUT, int pStorage[256][2]) {
+
+	string data, opBin, operandBin; //Initialize bin numbers and data strings
+	int opLocation = 0;  //Initialize control variable for the opLocation in memory
+	dataIN >> ws >> data;  //Read white space and first line
+	while (data[0] != 'X')  //Process machine code until an 'X' is encountered
+	{
+		opBin = data.substr(0, 8);  //Get binary information for deCode
+		operandBin = data.substr(8, 15);  //Get binary information for operand
+
+		pStorage[opLocation][0] = BinToDec(opBin, 8);  //Convert deCode from binary to decimal
+		pStorage[opLocation][1] = BinToDec(operandBin, 8);  //Convert operand from binary to decimal
+
+		dataOUT << data << endl; //Print binary number
+		opLocation++;  //Increment location
+		dataIN >> ws >> data;  //Read white space and next line
+	}
+	dataOUT << data << endl;  //Print end of Machine Language code data
+
+	for (int i = 0; i < 50; i++)  //Read numerical data
+	{
+		dataIN >> ws;  //Read white space
+		dataIN >> data;  //Read more data
+
+		pStorage[50 + i][0] = BinToDec(data, 16);  //Convert number and store it to primary storage
+
+		dataOUT << data; //Print binary number
+		dataOUT << endl;
+	}
+}
+//*****************************************************************************************************
 void printRegisters(ofstream&dataOUT, int MIR, int TMPR1, int TMPR2, int SDR1,
 	int SDR2, int CSIAR, int ACC1, int ACC2, int PSIAR, int SAR) {
 		// Receives – The output file and each of the registers
 		// Task - Print contents of each register
 		// Returns - Nothing
 		//Print content of each register
-	dataOUT << "MIR        TMPR1 | TMPR2        SDR1 | SDR2" << endl;
-	dataOUT << DecToHex(MIR, 2) << setw(13) << DecToHex(TMPR1, 2) << "  |  ";
-	dataOUT << DecToHex(TMPR2, 2) << setw(13) << DecToHex(SDR1, 2) << "  |  " << DecToHex(SDR2, 2);
-	dataOUT << endl << endl;
-	dataOUT << "CSIAR       ACC1 | ACC2        PSIAR    SAR" << endl;
-	dataOUT << DecToHex(CSIAR, 2) << setw(13) << DecToHex(ACC1, 2);
-	dataOUT << "  |  " << DecToHex(ACC2, 2) << setw(12) << DecToHex(PSIAR, 2);
-	dataOUT << setw(9) << DecToHex(SAR, 2) << endl << endl;
+	dataOUT << "MIR: " << DecToHex(MIR, 2) << "  |  TMPR1: " << DecToHex(TMPR1, 2)
+		<< "  |  TMPR2: " << DecToHex(TMPR2, 2) << "  |  SDR1: " << DecToHex(SDR1, 2)
+	    << "  |  SDR2: " << DecToHex(SDR2, 2) << endl << endl;
+
+
+	dataOUT << "CSIAR: " << DecToHex(CSIAR, 2) <<"  |  ACC1: "<< DecToHex(ACC1, 2)
+		<< "  |  ACC2: " << DecToHex(ACC2, 2) <<"  |  PSIAR: " << DecToHex(PSIAR, 2)
+		<<"  |  SAR: " << DecToHex(SAR, 2) << endl;
+	
 }
 //*****************************************************************************************************
 void printPrimaryMemory(ofstream&dataOUT, int pStorage[256][2]) {
@@ -569,42 +608,6 @@ void processData(int& MIR, int& TMPR1, int& TMPR2, int&  SDR1, int& SDR2, int&  
 	}
 }
 //*****************************************************************************************************
-void printDataLabel(ofstream&dataOUT, string label) {
-	dataOUT << endl << label << endl;
-	dataOUT << "-----------------------------------------------------------------------" << endl << endl;
-}
-
-void getData(ifstream&dataIN, ofstream&dataOUT, int pStorage[256][2]) {
-
-	string data, opBin, operandBin; //Initialize bin numbers and data strings
-	int opLocation = 0;  //Initialize control variable for the opLocation in memory
-	dataIN >> ws >> data;  //Read white space and first line
-	while (data[0] != 'X')  //Process machine code until an 'X' is encountered
-	{
-		opBin = data.substr(0, 8);  //Get binary information for deCode
-		operandBin = data.substr(8, 15);  //Get binary information for operand
-
-		pStorage[opLocation][0] = BinToDec(opBin, 8);  //Convert deCode from binary to decimal
-		pStorage[opLocation][1] = BinToDec(operandBin, 8);  //Convert operand from binary to decimal
-
-		dataOUT << data << endl; //Print binary number
-		opLocation++;  //Increment location
-		dataIN >> ws >> data;  //Read white space and next line
-	}
-	dataOUT << data << endl;  //Print end of Machine Language code data
-
-	for (int i = 0; i < 50; i++)  //Read numerical data
-	{
-		dataIN >> ws;  //Read white space
-		dataIN >> data;  //Read more data
-
-		pStorage[50 + i][0] = BinToDec(data, 16);  //Convert number and store it to primary storage
-
-		dataOUT << data; //Print binary number
-		dataOUT << endl;
-	}
-}
-//*****************************************************************************************************
 int main() {
 		// Receives – Nothing
 		// Task - Call each necessary function of the program in order
@@ -613,11 +616,11 @@ int main() {
 	int MIR = NULL, CSIAR = 0, PSIAR = 0, SAR = NULL, SDR1 = NULL, SDR2 = NULL;
 	int TMPR1 = 0, TMPR2 = 0, ACC1 = 0, ACC2 = 0;
 
-	int pStorage[256][2];  //Initialize simulated storage
+	int pStorage[256][2];  //Initialize primary storage as two dimmensional array of integers
 
-	for (int i = 0; i < 256; i++) {  //Set all contents of primary storage to NULL
-		for (int z = 0; z < 2; z++) {
-			pStorage[i][z] = NULL;
+	for (int first = 0; first < 256; first++) {  //Set all contents of primary storage to NULL
+		for (int second = 0; second < 2; second++) {
+			pStorage[first][second] = NULL;
 		}
 	}	
 	int nullNumber = 255; //Initialize nullNumber (all "ones" converted to decimal)

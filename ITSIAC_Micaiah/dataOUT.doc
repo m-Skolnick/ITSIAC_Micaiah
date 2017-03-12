@@ -2,10 +2,10 @@
                 Spring 2017                 Assignment #1
 ---------------------------------- - ---------------------------------- - 
 
+-----------------------------------------------------------------------
 
 ECHO Print Input Data
 -----------------------------------------------------------------------
-
 0000001101100100
 0000001001100100
 0000010001100100
@@ -78,10 +78,10 @@ XXXXXXXXXXXXXXXX
 0000001101001010
 1111111111101110
 0000000001010010
+-----------------------------------------------------------------------
 
 Primary Memory (Before Processing)
 -----------------------------------------------------------------------
-
 0364 0264 0464 0332 0164 0464 0303 0214 
 060D 0303 0113 0403 0503 07FF 08FF FFFF 
 FFFF FFFF FFFF FF01 0363 FFFF FFFF FFFF 
@@ -114,20 +114,17 @@ FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF
 FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF 
 FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF 
 FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF 
+-----------------------------------------------------------------------
 
 Contents of Registers (Before Processing)
 -----------------------------------------------------------------------
+MIR: FF  |  TMPR1: FF  |  TMPR2: FF  |  SDR1: FF  |  SDR2: FF
 
-MIR        TMPR1 | TMPR2        SDR1 | SDR2
-FF           FF  |  FF           FF  |  FF
-
-CSIAR       ACC1 | ACC2        PSIAR    SAR
-FF           FF  |  FF          FF       FF
-
+CSIAR: FF  |  ACC1: FF  |  ACC2: FF  |  PSIAR: FF  |  SAR: FF
+-----------------------------------------------------------------------
 
 Primary Memory (After Processing)
 -----------------------------------------------------------------------
-
 0364 0264 0464 0363 0164 0464 0303 0214 
 060D 0303 0113 0403 0503 07FF 08FF FFFF 
 FFFF FFFF FFFF FF01 0363 FFFF FFFF FFFF 
@@ -160,20 +157,17 @@ FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF
 FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF 
 FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF 
 FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF 
+-----------------------------------------------------------------------
 
 Contents of Registers (After Processing)
 -----------------------------------------------------------------------
+MIR: 3C  |  TMPR1: FF  |  TMPR2: FF  |  SDR1: 06  |  SDR2: 0D
 
-MIR        TMPR1 | TMPR2        SDR1 | SDR2
-3C           FF  |  FF           06  |  0D
-
-CSIAR       ACC1 | ACC2        PSIAR    SAR
-3D           FF  |  FF          09       08
-
+CSIAR: 3D  |  ACC1: FF  |  ACC2: FF  |  PSIAR: 09  |  SAR: 08
+-----------------------------------------------------------------------
 
 Counts of Instructions Performed
 -----------------------------------------------------------------------
-
 Microcode instruction count: 17970
 Machine language instruction count: 498
 
