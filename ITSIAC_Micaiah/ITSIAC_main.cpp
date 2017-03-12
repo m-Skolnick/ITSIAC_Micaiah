@@ -34,7 +34,7 @@
 using namespace std;
 //*************************************  FUNCTION HEADER  *********************************************
 void Header(ofstream &Outfile)
-{       // Receives – the output file
+{       // Receives – the output fil
 		// Task - Prints the output preamble
 		// Returns - Nothing
 	Outfile << setw(30) << "Micaiah Skolnick ";
