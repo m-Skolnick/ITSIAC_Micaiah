@@ -110,7 +110,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ITSIAC_main.cpp" />
+    <ClCompile Include="Project1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Data_its.txt" />
